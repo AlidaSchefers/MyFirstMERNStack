@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const bcrypt = require('bcrypt')
 const sendErr = require('../middlwares/sendGenericError')
 const User = require('../models/User.js') //the model
 const {check, validationResult} = require('express-validator')
@@ -36,11 +37,13 @@ router.post(
     check('password', "Password must be between 6 and 100 characters").isLength({min: 6, max: 100}),
     async (req, res) => {
     const errors = validationResult(req).array()
-    console.log(errors)
+    // console.log(errors)
     if(errors.length != 0) {
         return res.status(400).json({errors}) //return an array of all the errors (each error is an object)
     }
+    // const hashedPassword = await bcrypt.hash(req.body.password, 10) //10 is "saltRounds", or the complexity of string that will be created
     try {
+        req.body.password = await bcrypt.hash(req.body.password, 10)
         const newUser = await User.create(req.body) //create method is combo of new User and .save() in one
         res.status(201).json(newUser)
     } catch (err) {
