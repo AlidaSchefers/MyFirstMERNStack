@@ -56,16 +56,40 @@ router.post(
     }
 })
 
+// {"email": "hhhhh@jj.com",
+// "username": "H J",
+// "password": "passwrod888990"}
+
 //error occurs!
 router.post('/login', async (req, res) => { //post put patch all send a body. 
     try {
-        const DBUser =  validator.isEmail(req.body.identification) ? 
-            User.find({"email": req.body.identification}) :
-            User.find({"username": req.body.identification})
+//CODE FROM ANOTHER PROJECT:
+        //LETS VALIDATE THE DATA BEFORE MAKING A USER
+    // const {error} = loginValidation(req.body)
+    // if(error) return res.status(400).send(error.details[0].message)
+    //Checking if user is already in the database
+    // const user = await User.findOne({email: req.body.email}) //.findOne is a method in mongoose package!!
+    // if(!user) return res.status(400).send('Email is not found') //if returns and sends, the next lines will not run (b/c it's a return!)
+    // console.log("test", user)
+    
+    // //PASSWORD IS CORRECT
+    // const validPass = await bcrypt.compare(req.body.password, user.password) //user.password comes from DB. where is user defined?
+    // if(!validPass) return res.status(400).send('Invalid password or email')
+    // // res.send('Logged in!')
+
+    // //create and assign a token
+    // const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET)
+    // res.header('auth-token', token).send(token) //this is sent when a user logs in    
+
+//CODE FROM THIS PROJECT
+        // const DBUser =  validator.isEmail(req.body.identification) ? 
+        //     User.findOne({email: req.body.identification}) :
+        //     User.findOne({username: req.body.identification})
+        const DBUser = await User.findOne({email: req.body.identification})
         console.log("test", DBUser)
         // if(bcrypt.compare(req.body.password, DBUser.password)) {
-        //     const token = jwt.sign({"id": DBUser.__id}, process.env.SECRET_KEY)
-        //     // const token = jwt.sign({"id": DBUser.__id, "static value": 3}, process.env.SECRET_KEY)
+        //     const token = jwt.sign({"id": DBUser._id}, process.env.SECRET_KEY)
+        //     // const token = jwt.sign({"id": DBUser._id, "static value": 3}, process.env.SECRET_KEY)
         //     res.json(token)
         // }
     }catch (error) {
