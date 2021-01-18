@@ -7,6 +7,9 @@ const {check, validationResult} = require('express-validator')
 const validator = require('validator')
 const { findOne } = require('../models/User.js')
 
+const accountInfoRouter = require('./accountinfo')
+router.use('/accountinfo', accountInfoRouter)
+
 router.get('/all', async (req, res) => {
     try{
         // const key = 'email'
