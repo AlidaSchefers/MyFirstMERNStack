@@ -7,8 +7,8 @@ const {check, validationResult} = require('express-validator')
 const validator = require('validator')
 const { findOne } = require('../models/User.js')
 
-// const accountInfoRouter = require('./accountinfo')
-// router.use('/accountinfo', accountInfoRouter)
+const accountInfoRouter = require('./accountinfo')
+router.use('/accountinfo', accountInfoRouter)
 
 router.get('/all', async (req, res) => {
     try{
@@ -23,16 +23,6 @@ router.get('/all', async (req, res) => {
         sendErr(error, res)
     }
 })
-
-// router.get('/byname/:user', async (req, res) => {
-//     try{
-//         const allUsers = await User.find({username: req.params.user})
-//     }catch(err){
-//         res.json({message: err})
-//     }
-// })
-
-//async by default. 
 
 router.post(
     '/signup', 
@@ -58,10 +48,6 @@ router.post(
         sendErr(err, res) // this is an un-handled error.
     }
 })
-
-// {"email": "hhhhh@jj.com",
-// "username": "H J",
-// "password": "passwrod888990"}
 
 //error occurs!
 router.post('/login', async (req, res) => { //post put patch all send a body. 
