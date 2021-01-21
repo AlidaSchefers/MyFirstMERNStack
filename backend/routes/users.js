@@ -56,10 +56,18 @@ router.post('/login', async (req, res) => { //post put patch all send a body.
             await User.findOne({email: req.body.id}) : //we needed the "await"!
             await User.findOne({username: req.body.id})
         // console.log("test", DBUser)
-        if(bcrypt.compare(req.body.password, DBUser.password)) {
+        if(await bcrypt.compare(req.body.password, DBUser.password)) { //need to better learn when "await" is necessary
             const token = jwt.sign({"_id": DBUser._id}, process.env.SECRET_KEY) //_id really is one underscore!!
             res.json(token)
+        }else{
+            res.send("Password is invalid")
         }
+        // console.log(`the password is correct: ${await bcrypt.compare(req.body.password, DBUser.password)}`)
+        // console.log(bcrypt.compare(req.body.password, DBUser.password))
+        // console.log(`DBUser: ${DBUser}`)
+
+        // console.log(`database hashed password: ${DBUser.password}`)
+        // console.log(`password from req: ${req.body.password}`)
     }catch (error) {
         res.json({message: error.message || error})
     }
