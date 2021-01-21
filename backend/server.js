@@ -16,9 +16,6 @@ server.use('/greeting', (req, res, next) => {
 server.use(express.json()) //allows us to read the request body when it is json format
 server.use('/users', usersRouter)
 
-const accountInfoRouter = require('./routes/accountinfo')
-server.use('/accountinfo', accountInfoRouter)
-
 server.listen(3000, () => { //can update to make dynamic
     console.log("Listen on port 3000")
 })
