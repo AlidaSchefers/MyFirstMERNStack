@@ -16,6 +16,6 @@ server.use('/greeting', (req, res, next) => {
 server.use(express.json()) //allows us to read the request body when it is json format
 server.use('/users', usersRouter)
 
-server.listen(3000, () => { //can update to make dynamic
-    console.log("Listen on port 3000")
+server.listen(4000, () => { //need to change this from 3000 b/c frontend uses 3000 and they frontend and backend should not have same port num
+    console.log("Listen on port 4000")
 })
