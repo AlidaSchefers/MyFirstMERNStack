@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 
+//this just verifies that the token had not been modified since it was created. 
 module.exports = function(req, res, next) { //verifies the token
     //get the token
     const token = req.body.token
