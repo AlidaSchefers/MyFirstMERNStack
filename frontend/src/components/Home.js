@@ -1,11 +1,11 @@
 import React from 'react'
-import {homeTitle} from '../config/styles'
+import {pageTitle} from '../config/styles'
 
 export default function Home() { //Home is named from our file name
     return (
-        <div>
+        <div id="home">
             <h1 
-            style={{...homeTitle, fontSize: 'small'}}
+            style={{...pageTitle, fontSize: 'small'}}
             > 
             {/* ... is spread operator. makes a shallow copy */}
                 Welcome To Our Site
