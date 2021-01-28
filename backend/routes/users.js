@@ -24,6 +24,9 @@ router.get('/all', async (req, res) => {
     }
 })
 
+//@path POST /users/signup
+//@desc create a new user account
+//@access public
 router.post(
     '/signup', 
     check('email', "Email is required").not().isEmpty(),
@@ -52,9 +55,9 @@ router.post(
 //error occurs!
 router.post('/login', async (req, res) => { //post put patch all send a body. 
     try {
-        const DBUser = validator.isEmail(req.body.id) ? 
-            await User.findOne({email: req.body.id}) : //we needed the "await"!
-            await User.findOne({username: req.body.id})
+        const DBUser = validator.isEmail(req.body.cred) ?
+            await User.findOne({email: req.body.cred}) : //we needed the "await"!
+            await User.findOne({username: req.body.cred})
         // console.log("test", DBUser)
         if(await bcrypt.compare(req.body.password, DBUser.password)) { //need to better learn when "await" is necessary
             const token = jwt.sign({"_id": DBUser._id}, process.env.SECRET_KEY) //_id really is one underscore!!
