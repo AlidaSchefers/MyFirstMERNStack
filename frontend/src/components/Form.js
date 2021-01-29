@@ -30,9 +30,10 @@ export default function Form(props) {
                     value={formData[input.name]} //manually allow us to store in state //formData should update
                     // onChange={changeInput}
                     onChange={env => {
-                        console.log(input.name, env.target.name)
-                        setFormData({...formData, [input.name]: env.target.value})
-                    }}
+                        console.log(input.name, env.target.name) //where does env.target come from?
+                        setFormData({...formData, [input.name]: env.target.value}) //this modifies formData, but what triggers the reconfig? 
+                    }}  //^^ my first thought is that there would now be two elements with the key input.name  --does it automatically replace the previous key?
+                    //only thing that is similar is when there is key:oldValue and then you do objectOfObjects[key] = newValue to update and now it's kew:newValue
                     name={input.name}
                 />
             )
