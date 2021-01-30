@@ -6,9 +6,13 @@ const User = require('../models/User.js') //the model
 const {check, validationResult} = require('express-validator')
 const validator = require('validator')
 const { findOne } = require('../models/User.js')
+const verify = require('../middlwares/verifyToken')
 
 const accountInfoRouter = require('./accountinfo')
 router.use('/accountinfo', accountInfoRouter)
+
+// const membersOnlyRouter = require('./membersonly')
+// router.use('/membersonly', membersOnlyRouter)
 
 router.get('/all', async (req, res) => {
     try{
@@ -63,8 +67,8 @@ router.post('/login', async (req, res) => { //post put patch all send a body.
             const token = jwt.sign({"_id": DBUser._id}, process.env.SECRET_KEY) //_id really is one underscore!!
             res.json(token)
         }else{
-            res.send("Password is invalid")
-        }
+            res.status(400).json("Invalid credentials") //with 400 status, consider it an error
+        } //need an error status code with the error message above!
         // console.log(`the password is correct: ${await bcrypt.compare(req.body.password, DBUser.password)}`)
         // console.log(bcrypt.compare(req.body.password, DBUser.password))
         // console.log(`DBUser: ${DBUser}`)
@@ -72,8 +76,13 @@ router.post('/login', async (req, res) => { //post put patch all send a body.
         // console.log(`database hashed password: ${DBUser.password}`)
         // console.log(`password from req: ${req.body.password}`)
     }catch (error) {
-        res.json({message: error.message || error})
+        sendErr(error, res) 
+        // res.json({message: error.message || error})
     }
+})
+
+router.get('/confirmlogin', verify, async (req, res, next) => {
+    res.send('confirmed')
 })
 
 module.exports = router
