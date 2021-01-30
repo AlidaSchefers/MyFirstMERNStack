@@ -3,13 +3,13 @@ import { defaultNavBtn } from "../config/styles"; //defaultNavBtn is an object
 
 export default function Form(props) {
     const {inputs, submitMsg, submitFunc} = props //we get these when we call this function. makes sense.
-    const intialState = {} //have name of each input we have (e.g. email, username, password)
+    const initialState = {} //have name of each input we have (e.g. email, username, password)
 
     inputs.forEach(input => { //inputs is an array of objects, each which has name, placeholder, and type properties. 
-        intialState[input.name] = "" //so adds key-value pair of input.name: "" in the initialState object.
+        initialState[input.name] = "" //so adds key-value pair of input.name: "" in the initialState object.
     });
 
-    const [formData, setFormData] = useState(intialState) 
+    const [formData, setFormData] = useState(initialState) 
 
     //example of 'inputs'
     // [
@@ -27,11 +27,10 @@ export default function Form(props) {
                     //running through loop with new component each time, need key so can track the components
                     type={input.type}
                     placeholder={input.placeholder}
-                    value={formData[input.name]} //manually allow us to store in state //formData should update
-                    // onChange={changeInput}
+                    value={formData[input.name]} //manually allow us to store in state //formData should update onChange={changeInput}
                     onChange={env => {
                         console.log(input.name, env.target.name) //where does env.target come from?
-                        setFormData({...formData, [input.name]: env.target.value}) //this modifies formData, but what triggers the reconfig? 
+                        setFormData({...formData, [input.name]: env.target.value})
                     }}  //^^ my first thought is that there would now be two elements with the key input.name  --does it automatically replace the previous key?
                     //only thing that is similar is when there is key:oldValue and then you do objectOfObjects[key] = newValue to update and now it's kew:newValue
                     name={input.name}
@@ -41,6 +40,10 @@ export default function Form(props) {
         
     }
     //react able to get an array of JSX components and place it into other JSX code.
+    const resetForm = () => {
+        setFormData(initialState)
+    }
+
     return (
         <div>
             <form>
@@ -48,7 +51,11 @@ export default function Form(props) {
             </form>
             <button
                 style={{...defaultNavBtn}}
-                onClick = {() => (submitFunc(formData))}
+                onClick = {() => {
+                    submitFunc(formData, resetForm) //method injection.
+                    //pass the method it needs into submitFunc. define func in form component
+                }
+            }
             >
                 {submitMsg || 'Submit'}
             </button>
