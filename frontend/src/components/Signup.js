@@ -11,14 +11,24 @@ const inputs = [
 
 const submitMsg = "sign up"
 
-const submitFunc = (formData) => {
+const submitFunc = (formData, resetForm) => {
     console.log(formData)
     axios.post('http://localhost:4000/users/signup', formData) //need http://
     .then(response => {
-        console.log(response);
+        alert(`User ${response.data.username} was successfully created.`)
+        //after user is successfully created, clear the input fields! 
+        resetForm() 
     })
     .catch(error => {
         console.log(error);
+        // console.log("oh no! It didn't work.")
+        const errorsArr = error.response.data.errors
+        let alertStr = ""
+        for(let i = 0; i < errorsArr.length; i++) {
+            alertStr += `${errorsArr[i].msg}\n`
+            //could be better/simpler
+        }
+        alert(alertStr)
     })
 
     // axios.post('localhost:4000/users/signup', formData)
@@ -28,9 +38,7 @@ const submitFunc = (formData) => {
     // .catch(error => {
     //     console.log(error);
     // })
-
 }
-//cross origin requests: CORs
 
 export default function Signup() { //Home is named from our file name
     return (
